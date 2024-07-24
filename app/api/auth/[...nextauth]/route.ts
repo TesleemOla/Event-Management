@@ -2,7 +2,7 @@ import NextAuth, { Awaitable, RequestInternal, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 
 
-export default NextAuth({
+const handler = NextAuth({
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -15,13 +15,15 @@ export default NextAuth({
                 }
             },
             authorize: function (credentials: Record<"username", string> | undefined, req: Pick<RequestInternal, "body" | "query" | "headers" | "method">): Awaitable<User | null> {
-                
-                const user={id:'1', name:'User', email: "userexample@gmail.com"}
-                return user? user: null
+
+                const user = { id: '1', name: 'User', email: "userexample@gmail.com" }
+                return user ? user : null
             }
         })
     ],
-    pages: {
-        signIn: '/auth/signIn'
-    }
+    // pages: {
+    //     signIn: '/auth/signIn'
+    // }
 })
+
+export { handler as GET, handler as POST }

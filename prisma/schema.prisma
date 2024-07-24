@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -19,7 +20,7 @@ model User{
   password String
   firstName String
   lastName String
-  role Role @default(CLIENT)
+  role Role @default(client)
   event event[]
 }
 
@@ -27,12 +28,13 @@ model event{
   id String @id @default(uuid())
   eventName String
   host User[]
-  updatedAt DateTime @default(now())
-  start DateTime 
-  end DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt 
+  eventDate DateTime 
+  eventTime DateTime
 }
 
 enum Role{
-  ADMIN
-  CLIENT
+  admin
+  client
 }
