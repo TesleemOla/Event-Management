@@ -4,41 +4,27 @@ import Yup from "yup"
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import SendButton from "@/app/Components/SendButton";
-import prisma from "@prisma/client";
-import { sign, verify } from "jsonwebtoken"
+
+import prisma from "@/lib/db"
+import { sign } from "jsonwebtoken"
+import { Regdata } from "@/types";
 
 const Register = async () => {
-    // const formik = useFormik({
-    //     initialValues: {
-    //         name: '',
-    //         date: '',
-    //         location: '',
-    //     },
-    //     validationSchema: Yup.object({
-    //         name: Yup.string().required('Required'),
-    //         date: Yup.date().required('Required'),
-    //         location: Yup.string().required('Required'),
-    //     }),
-    //     onSubmit: (values) => {
-    //         axios.post('/api/events', values).then(response => {
-    //             // Handle success
-    //         });
-    //     },
-    // });
-    async function formaction(formdata){
+
+    async function formaction(formdata: FormData){
         "use server"
         const oldpwd = formdata.get("password")
         formdata.set("password", sign(oldpwd, process.env.JWT_SECRET))
-        const updated = formdata
-          
+     
+        // formdata.forEach((key, value:string)=> updated[key] = value)
+        const updated:Regdata = Object.fromEntries(Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)]))
         console.log(updated)
-
-        const decoded = verify(formdata.get("password"), process.env.JWT_SECRET)
-        console.log(decoded)
-        // const newUser = prisma.user.create()
+        const newUser = await prisma.user.create({
+            data: 
+                updated
+            
+        })
+        
     }
     // pages/index.js
 
@@ -54,6 +40,7 @@ const Register = async () => {
                             type="text"
                             placeholder="First Name"
                             name="firstName"
+                            required
                         />
                         </div>
                         <div className="flex flex-col">
@@ -64,6 +51,7 @@ const Register = async () => {
                             type="text"
                             placeholder="Last Name"
                             name="lastName"
+                            required
                         />
                         </div>
                     </div>
@@ -75,6 +63,7 @@ const Register = async () => {
                         type="email"
                         placeholder="Email Address"
                         name="email"
+                        required
                     />
                     </div>
                     <div className="flex flex-row gap-2">
@@ -86,6 +75,7 @@ const Register = async () => {
                             type="password"
                             placeholder="Password"
                             name="password"
+                            required
                         />
                         </div>
                         <div className="flex flex-col flex-1">
@@ -95,12 +85,22 @@ const Register = async () => {
                                 id="roles" name="role"
                             >
                                
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
+                                <option value="CLIENT">User</option>
+                                <option value="ADMIN">Admin</option>
                                 
                             </select>
                         </div>
                     </div>
+                    {/* {<div className="flex flex-col">
+                        <label htmlFor="email">Admin Super code</label>
+                        <input
+                            className="bg-gray-200 shadow-inner p-2 flex-1"
+                            id="admincode"
+                            type="text"
+                            placeholder="Email Address"
+                            required
+                        />
+                    </div>} */}
                     <button
                         className="bg-blue-600 hover:bg-blue-700 duration-300 text-white shadow p-2 rounded-r"
                         type="submit"
@@ -108,87 +108,15 @@ const Register = async () => {
                         Sign Up
                     </button>
                 </form>
+                <div>
+
+                </div>
             </div>
         );
     };
 
    
 
-    // return (
-//         <div className="text-center mx-auto my-2">
-//             <p>Register</p>
-//             {/* <button onClick={()=>signIn()}>Sign IN</button> */}
-//         <Box
-//             component="form"
-//             sx={{
-//                 '& .MuiTextField-root': { m: 1, width: '25ch' },
-//             }}
-//             noValidate
-//             autoComplete="off"
-//             className="grid grid-cols-2 items-center text-center"
-//             action={formaction}
-//         >
-//         <div>
-//             <TextField
-//                 required
-//                 id="outline-required"
-//                 label="FirstName"
-//                 defaultValue=""
-//                 variant="filled"
-//                 InputProps={{
-//                     name: "firstName"
-//                 }}
-//             />
-//             <TextField
-//                 required
-//                 id="outline-required"
-//                 label="LastName"
-//                 variant="filled"
-//                 InputProps={{
-//                     name: "lastName"
-//                 }}
-//             />
-//                 <TextField
-//                 required
-//                     id="outline-required"
-//                     label="Email"
-//                     defaultValue=""
-//                     InputProps={{
-//                         name: "email",
-//                         type:"email"
-//                     }}
-//                     variant="filled"
-//                 />
-//             <TextField
-//             required
-//                 id="filled-password-input"
-//                 label="Password"
-//                 type="password"
-//                 autoComplete="current-password"
-//                 variant="filled"
-//                 name="password"
-//             />
-          
-         
-
-//                 <FormControl fullWidth>
-//                     <InputLabel id="demo-simple-select-label">Age</InputLabel>
-//                     <Select
-//                         labelId="demo-simple-select-label"
-//                         id="demo-simple-select"
-//                         // value={age}
-//                         label="Age"
-//                         name="age"
-//                     >
-//                         <MenuItem value="CLIENT">CLIENT</MenuItem>
-//                         <MenuItem value="ADMIN">ADMIN</MenuItem>
-                        
-//                     </Select>
-//                     <SendButton btnfunc="Sign Up" />
-//                 </FormControl>
-//         </div>
-//         </Box>
-//         </div>
-// )}
+   
 
 export default Register

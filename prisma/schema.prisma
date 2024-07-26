@@ -20,21 +20,22 @@ model User{
   password String
   firstName String
   lastName String
-  role Role @default(client)
+  role Role @default(CLIENT)
   event event[]
 }
 
 model event{
   id String @id @default(uuid())
-  eventName String
+  eventTitle String
   host User[]
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt 
-  eventDate DateTime 
-  eventTime DateTime
+  eventDate String 
+  eventTime String
+
 }
 
 enum Role{
-  admin
-  client
+  ADMIN
+  CLIENT
 }

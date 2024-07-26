@@ -1,10 +1,43 @@
+// "use client"
+import { InputField } from "@/app/Components";
+import prisma from "@/lib/db"
+import { useState } from "react";
 
 
+async function EditPage(eventData:{params:{id: String}}){
+    const {params} = eventData
+    // const [isEditing, setIsEditing] = useState(false);
+    const event = await prisma.event.findUnique({
+        where: {
+            id: (params.id).toString()
+        }
+    })
+        console.log(event)
 
-const EditPage=(params:{id: String})=>{
-    const { id} = params
+    return <div>
+        <form>
+          
+            <div>
+                <label htmlFor="eventName">Event Name</label>
+                <input
+                    type="text"
+                    id="eventName"
+                    name="eventName"
+                    defaultValue={event?.eventName}
+                    // disabled={!isEditing}
+                />
+            </div>
 
-    return <div>Page {id}</div>
+            
+            <button type="button">
+                Edit
+            </button>
+            {/* {isEditing && ( */}
+                <button type="submit">Save</button>
+            {/* )} */}
+        </form>
+        
+        </div>
 }
 
 export default EditPage

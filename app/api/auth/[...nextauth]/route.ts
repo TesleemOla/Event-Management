@@ -1,6 +1,8 @@
 import NextAuth, { Awaitable, RequestInternal, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
-
+import prisma from "@/lib/db"
+import { verify } from "jsonwebtoken"
+import {userSignIn} from "@/types"
 
 const handler = NextAuth({
     providers: [
@@ -14,12 +16,19 @@ const handler = NextAuth({
                     label: "Password", type: "password"
                 }
             },
-            authorize: function (credentials: Record<"username", string> | undefined, req: Pick<RequestInternal, "body" | "query" | "headers" | "method">): Awaitable<User | null> {
+            authorize: function (credentials: userSignIn): Awaitable<User | null> {
 
-                const user = { id: '1', name: 'User', email: "userexample@gmail.com" }
-                return user ? user : null
+                const user = prisma.user.findUnique({
+                    where: {
+                        email: credentials?.username
+                    }
+                })
+                    const verified = verify(credentials.password, process.env.JWT_SECRET)
+                    
+                    return verified ? user : null
             }
-        })
+        })       
+        
     ],
     // pages: {
     //     signIn: '/auth/signIn'
