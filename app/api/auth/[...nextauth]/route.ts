@@ -16,20 +16,31 @@ const handler = NextAuth({
                     label: "Password", type: "password"
                 }
             },
-            authorize: function (credentials: userSignIn): Awaitable<User | null> {
-
+            authorize: function (credentials): Awaitable<User | null> {
+                const { password, username} = credentials
                 const user = prisma.user.findUnique({
                     where: {
-                        email: credentials?.username
+                        email: username
                     }
                 })
-                    const verified = verify(credentials.password, process.env.JWT_SECRET)
+                    const verified = verify(password, process.env.JWT_SECRET as string)
                     
                     return verified ? user : null
             }
         })       
         
     ],
+    callbacks: {
+        jwt({ token, user }) {
+            if (user) token.role = user.role
+            return token
+        },
+        session({ session, token }) {
+            session.user = token
+            return session
+        
+    },
+    }
     // pages: {
     //     signIn: '/auth/signIn'
     // }

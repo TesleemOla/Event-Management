@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth, 
   isToday, isSameMonth, getDay
  } from "date-fns"
+import Link from 'next/link'
 
 
  function Page() {
@@ -14,6 +15,7 @@ import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth,
   // console.log(events)
 
   const today = startOfToday();
+  const [selectedDay, setSelectedDay] = useState<Date>()
   const [currMonth, setCurrMonth] = useState(()=> format(today, 'MMM-yyy'))
 
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date())
@@ -46,16 +48,19 @@ import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth,
   const days = ["sun", "mon", "tue", "wed", "thu", "fri","sat"]
   return (
     <div className="mx-auto">
-      <h1>Events Menu</h1>
-      <select>
-        <option value="all">All Events</option>
-        <option value="myevents">My Events</option>
-      </select>
-      {/* <div>
-        {
+ 
+      <div className="flex flex-col gap-2 my-3 items-center">
+        <label htmlFor="events" className="text-sm/6 font-medium" >Events</label>
+        <select id="events" className={"text-black border-1 p-3"}>
+          <option value="all">All Events</option>
+          <option value="myevents">My Events</option>
+        </select>
+      </div>
+      <div>
+        {/* {
           events.map((item)=> <p key={item.id}>{item.eventDate}</p>)
-        }
-      </div> */}
+        } */}
+      </div>
       <div className="flex flex-col items-center justify-between">
         <div className="flex gap-6 sm:gap-12">
         <p className="font-semibold text-xl">
@@ -82,16 +87,17 @@ import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth,
             {
               daysInMonth.map((day,id)=>{
                 return (
-                  <div key={id} className={colStartClasses[getDay(day)]}>
+                  <Link href={`/Events/edit/${day}:${currMonth}`} key={id} className={colStartClasses[getDay(day)]} onClick={()=>{setSelectedDay(day)}}>
                     <p className={`cursor-pointer flex items-center justify-center font-semibold
-                    h-8 w-8 rounded-full hover:text-white ${isSameMonth(day, today) ? 
+                    h-8 w-8 rounded-full hover:text-white  ${isSameMonth(day, today) ? 
                       "text-gray-900": "text-gray-400"
                     } ${!isToday(day) && "hover:bg-blue-500"} 
                     ${isToday(day) && "bg-red-500 text-white"}
-                    `}>
+                    // ${day === selectedDay && "active:text-black active:bg-yellow"}
+                    `} >
                       {format(day, "d")}
                     </p>
-                  </div>
+                  </Link>
                 )
               })
             }

@@ -1,10 +1,15 @@
+"use client"
+import { useParams } from 'next/navigation'
+import React from 'react'
 
-const EditEvent=({params}: {params:{id: string}})=>{
-    
+const SingleEvent = () => {
+    const {id} = useParams()
 
-    return (
-        <div>Page {params.id}</div>
-    )
+  return (
+    <div>
+        Event {id}
+    </div>
+  )
 }
 
-export default EditEvent
+export default SingleEvent
