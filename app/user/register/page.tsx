@@ -1,35 +1,52 @@
-
-import  { useFormik } from "formik";
-import Yup from "yup"
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-
 import prisma from "@/lib/db"
 import { sign } from "jsonwebtoken"
-import { Regdata } from "@/types";
+import { redirect } from "next/navigation";
+import { Role } from "@prisma/client";
+
 
 const Register = async () => {
 
     async function formaction(formdata: FormData){
         "use server"
-        const oldpwd = formdata.get("password")
-        formdata.set("password", sign(oldpwd, process.env.JWT_SECRET))
-     
-        // formdata.forEach((key, value:string)=> updated[key] = value)
-        const updated:Regdata = Object.fromEntries(Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)]))
-        console.log(updated)
-        const newUser = await prisma.user.create({
-            data: 
-                updated
+        let oldpwd  = formdata.get("password") as string 
+        
+        if(!oldpwd){
+            throw new Error("Password is required")
+        }
+      
+        formdata.set("password", sign(oldpwd, process.env.JWT_SECRET as string))
+
+        const updated = Object.fromEntries(
+            Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) :
+                 formdata.get(key)])) 
+        const data = {
+            firstName: updated.firstName as string,
+            lastName: updated.lastName as string,
+            email: updated.email as string,
+            password: updated.password as string,
+            role: updated.role as Role
+        }
+        try{
+            const newUser = await prisma.user.create({
+                data: data
+            })
+            console.log(newUser)
+    
+                
+            console.log(newUser)
+            redirect("/Events")
+        
+        } catch(err){
             
-        })
+            console.log(err)
+        }
         
     }
     // pages/index.js
 
         return (
             <div className="p-8 justify-center items-center h-screen flex">
+               
                 <form className="flex flex-col gap-10" action={formaction}>
                     <div className="flex flex-row gap-2">
                         <div className="flex flex-col">
@@ -85,22 +102,13 @@ const Register = async () => {
                                 id="roles" name="role"
                             >
                                
-                                <option value="CLIENT">User</option>
+                                <option value="CLIENT" >User</option>
                                 <option value="ADMIN">Admin</option>
                                 
                             </select>
                         </div>
                     </div>
-                    {/* {<div className="flex flex-col">
-                        <label htmlFor="email">Admin Super code</label>
-                        <input
-                            className="bg-gray-200 shadow-inner p-2 flex-1"
-                            id="admincode"
-                            type="text"
-                            placeholder="Email Address"
-                            required
-                        />
-                    </div>} */}
+
                     <button
                         className="bg-blue-600 hover:bg-blue-700 duration-300 text-white shadow p-2 rounded-r"
                         type="submit"

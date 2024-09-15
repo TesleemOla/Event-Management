@@ -1,7 +1,11 @@
 import InputField from "./InputField"
-import UploadBtn from "./CloudinaryUpload"
+import SendButton from "./SendButton"
+import Heading from "./Heading"
+import Auth from "./Auth"
 
 export {
     InputField,
-    UploadBtn
+    SendButton,
+    Heading,
+    Auth
 }

@@ -2,23 +2,24 @@ import React from 'react'
 import prisma from "@/lib/db"
 
 
+
+
 async function Page() {
-
-    const users = prisma.user.findMany();
-
+    const users =[]
+    prisma.user.findMany()
+    .then(res=> users.push(res))
     
     async function eventAction(formdata: FormData){
       "use server"
-      const formentries = {...formdata}
+    
       const newObj=Object.fromEntries(Array.from(formdata.keys()).slice(1).
       map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)]))
-
-      const newEvent = await prisma.event.create({
-        data: {
-          ...newObj
-        }
-      })
-     console.log(newEvent)
+      console.log(newObj)
+      
+    //   const newEvent = await prisma.event.create({
+    //     data: newObj
+    //   })
+    //  console.log(newEvent)
     }
   return (
     <div className="w-full max-w-md mx-auto">

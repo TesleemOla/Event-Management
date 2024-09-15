@@ -1,8 +1,11 @@
 import React from 'react'
 
+type Inputprops={
+   id: string, name: string, label: string
+}
 const InputField = ({
-    id, name, label
-}:{id: string, name: string, label: string}) => {
+    id, name, label,
+}:Inputprops) => {
   return (
     <div className="flex flex-col">
           <label htmlFor={id}>{label}</label>
@@ -13,6 +16,7 @@ const InputField = ({
               placeholder={label}
               name={name}
               required
+              
           />
     </div>
   )
