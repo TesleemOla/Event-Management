@@ -1,37 +1,37 @@
 "use client"
-import { toast, ToastContent, ToastOptions } from "react-toastify"
+import { toast } from "sonner"
 
 
-export const defaultToastOptions: ToastOptions = {
-    position: "top-center",
-    autoClose: 4000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    // transition: Slide,
-}
+// export const defaultToastOptions: ToastOptions = {
+//     position: "top-center",
+//     autoClose: 4000,
+//     hideProgressBar: true,
+//     closeOnClick: true,
+//     pauseOnHover: true,
+//     draggable: true,
+//     progress: undefined,
+//     theme: "colored",
+//     transition: Slide,
+// }
 
 type ToastType = "success" | "error" | "info" | "warning" | "default"
 
 
-export const ShowToast = (
+export function showToast (
     type: ToastType,
-    content: ToastContent,
-    options: Partial<ToastOptions> = defaultToastOptions
-) => {
+    content: string
+    // options: Partial<ToastOptions> = defaultToastOptions
+) {
     switch (type) {
         case "success":
-            return toast.success(content, options);
+             toast.success(content);
         case "error":
-            return toast.error(content, options);
+             toast.error(content);
         case "info":
-            return toast.info(content, options);
+             toast.info(content);
         case "warning":
-            return toast.warn(content, options);
+             toast.warning(content);
         default:
-            return toast(content, options);
+             toast(content);
     }
 }

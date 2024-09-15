@@ -8,20 +8,27 @@ const Register = async () => {
 
     async function formaction(formdata: FormData){
         "use server"
-        let oldpwd  = formdata.get("password")
+        let oldpwd  = formdata.get("password") as string 
+        
+        if(!oldpwd){
+            throw new Error("Password is required")
+        }
       
-        formdata.set("password", sign(oldpwd?.toString(), process.env.JWT_SECRET as string))
+        formdata.set("password", sign(oldpwd, process.env.JWT_SECRET as string))
 
-        const updated = Object.fromEntries(Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) : formdata.get(key)]))
+        const updated = Object.fromEntries(
+            Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) :
+                 formdata.get(key)])) 
         try{
-        const newUser = await prisma.user.create({
-            data: updated 
-        })
-        if(newUser){
-            
+            const newUser = await prisma.user.create({
+                data: updated 
+            })
+            console.log(newUser)
+    
+                
             console.log(newUser)
             redirect("/Events")
-        }
+        
         } catch(err){
             
             console.log(err)

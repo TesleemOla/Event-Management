@@ -1,6 +1,5 @@
 "use client"
 import React, { useState} from 'react'
-import prisma from "@/lib/db"
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth, 
   isToday, isSameMonth, getDay
@@ -10,9 +9,6 @@ import Link from 'next/link'
 
  function Page() {
 
-  // const events = await prisma.event.findMany()
-
-  // console.log(events)
 
   const today = startOfToday();
   const [selectedDay, setSelectedDay] = useState<Date>()
@@ -49,13 +45,6 @@ import Link from 'next/link'
   return (
     <div className="mx-auto">
  
-      <div className="flex flex-col gap-2 my-3 items-center">
-        <label htmlFor="events" className="text-sm/6 font-medium" >Events</label>
-        <select id="events" className={"text-black border-1 p-3"}>
-          <option value="all">All Events</option>
-          <option value="myevents">My Events</option>
-        </select>
-      </div>
       <div>
         {/* {
           events.map((item)=> <p key={item.id}>{item.eventDate}</p>)
@@ -87,7 +76,7 @@ import Link from 'next/link'
             {
               daysInMonth.map((day,id)=>{
                 return (
-                  <Link href={`/Events/edit/${day}:${currMonth}`} key={id} className={colStartClasses[getDay(day)]} onClick={()=>{setSelectedDay(day)}}>
+                  <Link href={`/Events/edit/${format(currMonth, "yyyy-MM")}-${format(day, "d")}`} key={id} className={colStartClasses[getDay(day)]} >
                     <p className={`cursor-pointer flex items-center justify-center font-semibold
                     h-8 w-8 rounded-full hover:text-white  ${isSameMonth(day, today) ? 
                       "text-gray-900": "text-gray-400"
