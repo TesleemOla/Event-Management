@@ -1,49 +1,54 @@
-import NextAuth, { Awaitable, RequestInternal, User } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import prisma from "@/lib/db"
-import { verify } from "jsonwebtoken"
-import {userSignIn} from "@/types"
+import { sign } from "jsonwebtoken"
+
+
 
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: {
-                    label: 'Username', type: "text"
+                email: {
+                    label: 'Email', type: "text"
                 },
                 password: {
                     label: "Password", type: "password"
                 }
             },
-            authorize: function (credentials): Awaitable<User | null> {
-                const { password, username} = credentials
-                const user = prisma.user.findUnique({
+            authorize: async function (credentials){
+                const { email, password } = credentials as {email:string, password:string}
+                const encoded = sign(password, process.env.JWT_SECRET as string)
+          
+                const user = await prisma.user.findUnique({
                     where: {
-                        email: username
+                        email: email,
+                        password: encoded
                     }
                 })
-                    const verified = verify(password, process.env.JWT_SECRET as string)
+                if (user) {
+                    return user;
+                }
+                throw new Error("User not found");
                     
-                    return verified ? user : null
             }
         })       
         
     ],
     callbacks: {
-        jwt({ token, user }) {
-            if (user) token.role = user.role
-            return token
+        async jwt({ token, user }) {
+            console.log(user)
+            console.log(token)
+            return {token, ...user}
         },
-        session({ session, token }) {
-            session.user = token
+        async session({ session, token }) {
             return session
         
     },
-    }
-    // pages: {
-    //     signIn: '/auth/signIn'
-    // }
+    },
+   
+    secret: process.env.JWT_SECRET
 })
 
 export { handler as GET, handler as POST }

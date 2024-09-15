@@ -1,7 +1,7 @@
 import prisma from "@/lib/db"
 import { sign } from "jsonwebtoken"
-import { Regdata } from "@/types";
 import { redirect } from "next/navigation";
+import { Role } from "@prisma/client";
 
 
 const Register = async () => {
@@ -19,9 +19,16 @@ const Register = async () => {
         const updated = Object.fromEntries(
             Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) :
                  formdata.get(key)])) 
+        const data = {
+            firstName: updated.firstName as string,
+            lastName: updated.lastName as string,
+            email: updated.email as string,
+            password: updated.password as string,
+            role: updated.role as Role
+        }
         try{
             const newUser = await prisma.user.create({
-                data: updated 
+                data: data
             })
             console.log(newUser)
     
