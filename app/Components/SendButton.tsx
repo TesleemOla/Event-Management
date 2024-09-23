@@ -1,13 +1,14 @@
 "use client"
 import React from 'react'
-import { useFormStatus } from 'react-dom'
+import { useFormState, useFormStatus } from 'react-dom'
 
 const SendButton = ({btnfunc}:{btnfunc:string}) => {
 
-  const {pending, data, method, action }=useFormStatus()
+  const {pending}=useFormStatus()
   return (
     <button type="submit"
-    className="text-center my-3 bg-blue-500 text-white p-3 px-2 rounded-2xl cursor-pointer" aria-disabled={pending}>{btnfunc}</button>
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      aria-disabled={pending}>{btnfunc}</button>
   )
 }
 

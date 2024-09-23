@@ -2,6 +2,10 @@ import prisma from "@/lib/db"
 import { sign } from "jsonwebtoken"
 import { redirect } from "next/navigation";
 import { Role } from "@prisma/client";
+import { showError, showSuccess, showToast } from "@/app/Components/toastItem";
+import { toast } from "sonner";
+import Swal from "sweetalert2";
+
 
 
 const Register = async () => {
@@ -19,6 +23,7 @@ const Register = async () => {
         const updated = Object.fromEntries(
             Array.from(formdata.keys()).slice(1).map(key => [key, formdata.getAll(key).length > 1 ? formdata.getAll(key) :
                  formdata.get(key)])) 
+
         const data = {
             firstName: updated.firstName as string,
             lastName: updated.lastName as string,
@@ -31,15 +36,22 @@ const Register = async () => {
                 data: data
             })
             console.log(newUser)
-    
-                
-            console.log(newUser)
-            redirect("/Events")
-        
-        } catch(err){
-            
-            console.log(err)
+          newUser && 
+          Swal.fire({
+            title: "Auto close alert!",
+            text: "User created successfully",
+            icon: "success"
+          })
         }
+        catch(err){
+            Swal.fire({
+            title: "Error",
+            text:"New User Created",
+            icon: "error"
+        }) 
+        }
+           
+         
         
     }
     // pages/index.js

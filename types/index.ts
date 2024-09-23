@@ -16,3 +16,12 @@ export interface userSignIn{
     username: string,
     password: string
 }
+
+export interface eventDetails{
+    id?: string,
+    eventTitle: string,
+    eventDate: string,
+    eventTime: string,
+    createdAt?: Date,
+    updatedAt?: Date | null
+}
