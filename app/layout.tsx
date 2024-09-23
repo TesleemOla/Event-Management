@@ -3,6 +3,7 @@
 import { SessionProvider } from "next-auth/react"
 import "./globals.css";
 import Header from "./Components/Header";
+import { Toaster } from "sonner";
 
 
 
@@ -18,12 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        
-        <SessionProvider>
-          <Header/>
-          {children}
-        </SessionProvider>
+      <body className="my-4">
+
+          <SessionProvider>
+            <Header/>
+            {children}
+            <Toaster richColors position="top-right"/>
+          </SessionProvider>
       </body>
     </html>
   );
