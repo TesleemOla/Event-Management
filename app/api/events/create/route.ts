@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse} from "next/server"
+import { NextRequest} from "next/server"
 import prisma from "@/lib/db"
 export const dynamic = 'force-static'
 
@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
             
             return Response.json({ data: newEvent, message: "New event created", status: 201 })
 
-    } catch (err) {
-        return Response.json({ error: err, status: 500 })
+    } catch (err:any) {
+        throw Error(err?.message)
     }
 
     

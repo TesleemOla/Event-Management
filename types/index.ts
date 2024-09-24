@@ -7,15 +7,17 @@ export interface Regdata{
 }
 
 
-enum Role{
-    ADMIN,
-    CLIENT
+export enum Role{
+    ADMIN = "ADMIN",
+    CLIENT = "CLIENT"
 }
 
 export interface userSignIn{
     username: string,
     password: string
 }
+
+
 
 export interface eventDetails{
     id?: string,
