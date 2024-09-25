@@ -29,7 +29,7 @@ const SingleEvent = async ({params}:params) => {
         </div>
         {
         allEvents.map(({eventDate, eventTime, eventTitle, id})=>{
-          return <div key={id} className="grid grid-flow-col justify-between border-2 p-4">
+          return <div key={id} className="grid grid-flow-col justify-between border-2 p-4 hover:scale-90 cursor-pointer">
             <p className="flex flex-col">
               <span>{eventDate}</span>
               <span>{eventTime}</span>

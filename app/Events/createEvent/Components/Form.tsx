@@ -1,10 +1,15 @@
 "use client"
+import { object, string} from "yup"
 import { SendButton } from "@/app/Components"
 import { action } from "../page"
 import { showToast } from "@/app/Components/toastItem"
 import { useRef } from "react"
 
-
+const formSchema=object({
+  eventTitle: string().required("Please provide an event"),
+  eventDate: string().required("Please provide a date for the event"),
+  eventTime: string().required("Please provide a time for the event")
+})
 const CreateForm = () =>{
   const formRef = useRef<HTMLFormElement|null>(null)
   
@@ -16,11 +21,13 @@ const CreateForm = () =>{
         formRef?.current?.reset()      
 
         const data = {eventTitle, eventDate, eventTime}
-        const result = await action(data)
-        console.log(result)
+        const parsed = await formSchema.validate(data)
+        
+        const result = await action(parsed)
+        
         result?.status === 201 ?
          showToast("success", "New event added")
-                 :showToast("error", "an error occured")
+        :showToast("error", "an error occured")
 
     }
 
@@ -61,8 +68,9 @@ const CreateForm = () =>{
               required
             />
           </div>
-     
+          <div className="text-center">
           <SendButton btnfunc='Create Event' />
+          </div>
         </form>
 
     )

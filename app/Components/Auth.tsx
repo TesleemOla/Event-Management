@@ -6,21 +6,26 @@ import React from 'react'
     
 const Auth = () => {
     const { data, status } = useSession()
-  
+   
   return (
-    <>
-    <button type="button" onClick={
-        ()=> status==="authenticated"? signOut(): signIn()
-    } className="md:bg-blue-600 md:text-white p-2 md:rounded-2xl">
-        {
-            status === "authenticated"?
-            "Sign Out": "Sign In"
-        }
-    </button>
-          <Link href="/user/register" className="md:bg-blue-600 md:text-white p-2 md:rounded-2xl">
-        Register
-    </Link>
-    </>
+    <div className="flex flex-col h-fit md:flex-row md:justify-around md:gap-40">
+          <Link href={
+              status !== "authenticated" ? "/user/register" :
+                  "#"}
+              className="md:bg-red-600 md:text-white p-3 py-1 md:rounded-2xl md:h-fit">
+              {status !== "authenticated" ? 'Register' :
+                  data?.user?.email}
+          </Link>
+        <button type="button" onClick={
+            ()=> status==="authenticated"? signOut(): signIn()
+            } className="md:bg-green-600 md:text-white p-3 py-1 md:rounded-2xl min-w-fit md:h-fit">
+            {
+                status === "authenticated"?
+                "SignOut": "SignIn"
+            }
+        </button>
+          
+    </div>
   )
 }
 

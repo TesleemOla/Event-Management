@@ -33,7 +33,7 @@ export default function Register({noAdmin}: {noAdmin: boolean}){
 
     return (
         <div className="p-8 justify-center items-center h-screen flex">
-
+            {/* {error && <p>{error}</p>} */}
             <form className="flex flex-col gap-10" action={formaction} ref={formRef}>
                 <div className="flex flex-row gap-2">
                     <div className="flex flex-col">
