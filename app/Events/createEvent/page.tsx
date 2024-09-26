@@ -2,11 +2,9 @@
 import CreateForm from "./Components/Form"
 
 
-  
 
 
-
-async function Page() {
+export default async function Page() {
     
 
   return (
@@ -18,5 +16,5 @@ async function Page() {
   )
 }
 
-export default Page
+ 
 
