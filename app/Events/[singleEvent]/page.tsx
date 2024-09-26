@@ -9,11 +9,7 @@ type paramProps ={
   }
 }
 
-type eventDetails ={
-  eventTitle: string,
-  eventDate: string,
-  eventTime: string
-}
+
 
 const SingleEvent = async({params}:paramProps) => {
   const { singleEvent } = params
@@ -48,7 +44,7 @@ const SingleEvent = async({params}:paramProps) => {
   }
  
   return (
-    <div className="text-left w-2/5 mx-auto">
+    <div className="text-left w-2/5 mx-auto ">
       <Heading heading="Edit Single Event" />
       <form action={submitEdit}>
         <div className="flex flex-col">
