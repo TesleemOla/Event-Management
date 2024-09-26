@@ -2,6 +2,7 @@ import React from 'react'
 import prisma from '@/lib/db'
 import EditIcon from '@/app/Components/icons/editIcon'
 import Link from 'next/link'
+import EventsMap from '@/app/Components/EventsMap'
 
 interface params {
   params: {
@@ -18,27 +19,15 @@ const SingleEvent = async ({params}:params) => {
     
   return (
     <div>
-        Events for {id}
 
         <div className="flex flex-col gap-2 my-3 items-center">
-          <label htmlFor="events" className="text-sm/6 font-medium" >Events</label>
+          <label htmlFor="events" className="text-sm/6 font-medium" >Events for {id}</label>
           <select id="events" className={"text-black border-1 p-3"}>
             <option value="all">All Events</option>
             <option value="myevents">My Events</option>
           </select>
         </div>
-        {
-        allEvents.map(({eventDate, eventTime, eventTitle, id})=>{
-          return <div key={id} className="grid grid-flow-col justify-between border-2 p-4 hover:scale-90 cursor-pointer">
-            <p className="flex flex-col">
-              <span>{eventDate}</span>
-              <span>{eventTime}</span>
-            </p>
-            <p className="text-center font-extrabold text-2xl">{eventTitle}</p>
-            <Link href={`/Events/${id}`}><EditIcon /></Link>
-          </div>
-        })
-        }
+        <EventsMap allEvents={allEvents} />
     </div>
   )
 }

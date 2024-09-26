@@ -1,21 +1,55 @@
-"use client"
-import { Heading } from "./Components";
-import Image from "next/image"
+import prisma from '@/lib/db';
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import EventsMap from './Components/EventsMap';
 
 
-export default function Home() {
+export default async function Home() {
+
+  const today =new Date()
+  const mydate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+  const events = await prisma.event.findMany({
+    where: { eventDate: mydate }
+  })
+
   return (
-    <main className="bg-transparent text-center">
-      <section>
-        <Heading   heading="Welcome to Planner" />
-        <p className="font-medium">A multipurpose event management system that saves details about tasks and dates for easy time management</p>
-      </section>
-      <section className="w-full h-1/2 mx-auto flex">
-        <Image src="/images/niche-wedding.jpg" alt="home description" width={1000} height={600} />
-        <p>
-         Events Today
+    <main className="bg-gray-100 text-center p-6">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold text-blue-600">Prostar Event Management</h1>
+        <p className="text-lg text-gray-700 mt-2">A multipurpose event management system that saves details about tasks and dates for easy time management</p>
+      </header>
+      <section className="mb-8">
+        {
+          events.length === 0?
+        <p className="text-4xl font-bold">No Events Today</p>:
+
+          <Link href={`/Events/${mydate}`} className="text-2xl bg-red-400 rounded-full p-2 text-white font-bold">
+        Events Today</Link>
+}
+        <p className="text-gray-700 mt-2">
+          Stay updated about your daily events and never miss them
         </p>
+     
+       <EventsMap allEvents={events} />
       </section>
+      <section className="mb-8">
+        <Image
+          src="/images/niche-wedding.jpg"
+          alt="Event banner"
+          width={1200}
+          height={600}
+          className="rounded-lg shadow-lg mx-auto"
+        />
+      </section>
+      
+      
+      <footer className="mt-8">
+        <p className="text-gray-600">© 2024 Planner Event Management. All rights reserved.</p>
+      </footer>
     </main>
   );
-}
+};
+
+
+
