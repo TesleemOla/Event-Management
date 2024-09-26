@@ -1,7 +1,7 @@
 "use client"
 import { object, string} from "yup"
 import { SendButton } from "@/app/Components"
-import { action } from "../page"
+import { action } from "./action"
 import { showToast } from "@/app/Components/toastItem"
 import { useRef } from "react"
 
