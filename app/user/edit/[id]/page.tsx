@@ -23,7 +23,7 @@ async function EditPage(eventData:{params:{id: String}}){
                     type="text"
                     id="eventName"
                     name="eventName"
-                    defaultValue={event?.eventName}
+                    defaultValue={event?.eventTitle}
                     // disabled={!isEditing}
                 />
             </div>
