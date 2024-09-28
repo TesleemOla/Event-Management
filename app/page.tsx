@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <main className="bg-gray-100 text-center p-6">
       <header className="mb-8">
-        <h1 className="text-4xl font-bold text-blue-600">Prostar Event Management</h1>
+        <h1 className="text-4xl font-bold text-blue-600">Planner</h1>
         <p className="text-lg text-gray-700 mt-2">A multipurpose event management system that saves details about tasks and dates for easy time management</p>
       </header>
       <section className="mb-8">
