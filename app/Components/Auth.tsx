@@ -12,13 +12,13 @@ const Auth = () => {
           <Link href={
               status !== "authenticated" ? "/user/register" :
                   "#"}
-              className="md:bg-red-600 md:text-white md:rounded-sm md:h-fit">
+              className="md:bg-red-600 md:text-white p-2 md:rounded-lg md:h-fit">
               {status !== "authenticated" ? 'Register' :
                   data?.user?.email}
           </Link>
         <button type="button" onClick={
             ()=> status==="authenticated"? signOut(): signIn()
-            } className="bg-green-600 text-white w-10 p-2 md:rounded-sm min-w-fit md:h-fit">
+            } className="bg-green-600 text-white w-10 p-2 md:rounded-lg min-w-fit md:h-fit">
             {
                 status === "authenticated"?
                 "SignOut": "SignIn"
