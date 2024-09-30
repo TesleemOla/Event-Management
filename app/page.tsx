@@ -8,10 +8,14 @@ import EventsMap from './Components/EventsMap';
 export default async function Home() {
 
   const today =new Date()
-  const mydate = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`
+  const mydate = `${today.getFullYear()}-
+  ${today.getMonth()+1 < 10? `0${today.getMonth()+1}`:
+     today.getMonth()}-${today.getDate()}`
+ 
   const events = await prisma.event.findMany({
     where: { eventDate: mydate }
   })
+ 
 
   return (
     <main className="bg-gray-100 text-center p-6">
