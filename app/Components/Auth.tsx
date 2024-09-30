@@ -21,7 +21,7 @@ const Auth = () => {
             } className="bg-green-600 text-white w-10 p-2 md:rounded-lg min-w-fit md:h-fit">
             {
                 status === "authenticated"?
-                "SignOut": "SignIn"
+                "Sign Out": "Sign In"
             }
         </button>
           
