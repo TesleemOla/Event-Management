@@ -21,10 +21,10 @@ const Header = () => {
             <Burger />
           </button>
        
-      <nav className={clsx(`flex flex-col gap-4 items-center w-1/2 md:w-auto md:flex-row md:gap-10`,
+      <nav className={clsx(`flex flex-col gap-4 items-start w-1/2 md:items-center md:w-auto md:flex-row md:gap-10`,
           !openNav && "hidden md:flex", openNav && 'flex'
         )}>
-            <Link href="/Events" className=" font-bold text-xl">
+            <Link href="/Events" className="font-bold text-xl">
                 Events
             </Link>
             {route === "/Events" && <Link href="Events/createEvent" className=" font-bold text-xl">
