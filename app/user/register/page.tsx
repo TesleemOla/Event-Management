@@ -4,10 +4,13 @@ import RegisterClient from "./Components/Form";
 
 
 
-const Register = async () => {
+const Register = () => {
     
         return (
-           <RegisterClient noAdmin={true} />
+            <>
+                <p className="text-rose-700 text-center font-extrabold text-xl">Register User</p>
+                <RegisterClient noAdmin={true} />
+           </>
         );
     };
 
