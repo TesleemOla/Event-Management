@@ -1,18 +1,20 @@
+"use server"
+import prisma from "@/lib/db";
 import { Regdata } from "@/types";
 
 
 export async function action(data: Regdata) {
-
+ 
     try {
-        const newUser = await fetch("/api/register", {
-            method: "POST",
-            body: JSON.stringify(data)
+
+        const newUser = await prisma.user.create({
+            data: data
         })
-        const response = await newUser.json()
-        return response
+        return newUser
+      
 
     }
     catch (err: any) {
-        return err
+        throw err
     }
 }

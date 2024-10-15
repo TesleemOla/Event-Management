@@ -17,23 +17,27 @@ export default function Register({noAdmin}: {noAdmin: boolean}){
             lastName: formdata.get("lastName") as string,
             email: formdata.get("email") as string,
             password: formdata.get("password") as string,
-            role: formdata.get("role") ? formdata.get("role") as Role : Role.CLIENT as Role
+            role: formdata.get("role")? formdata.get("role") as Role : Role.CLIENT as Role
         }
         
         try {
             const newUser = await action(data)
 
-            newUser && showToast("success", "User created successfully")
+            if(newUser){
+              showToast("success", "User created successfully")
+            }
+        
             formRef?.current?.reset()
         } catch (err: any) {
             showToast("error", err?.message)
+            formRef?.current?.reset()
         }
     }
 
 
     return (
-        <div className="p-8 justify-center items-center h-screen flex">
-            {/* {error && <p>{error}</p>} */}
+        <div className="p-8 justify-center h-screen flex">
+            
             <form className="flex flex-col gap-10" action={formaction} ref={formRef}>
                 <div className="flex flex-row gap-2">
                     <div className="flex flex-col">

@@ -1,5 +1,4 @@
 "use client"
-import { useEffect } from "react";
 import { toast } from "sonner"
 
 
@@ -21,8 +20,6 @@ export function showToast(
           toast.info(content);
         case "warning":
           toast.warning(content);
-        default:
-          toast(content);
      }
      
        
