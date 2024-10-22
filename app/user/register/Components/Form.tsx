@@ -3,6 +3,7 @@ import { Role } from "@/types";
 import { showToast } from "@/app/Components/toastItem";
 import { action } from "../Components/actions/serverCall";
 import { useRef } from "react";
+import { signPwd } from "./actions/signPwd";
 
 
 export default function Register({noAdmin}: {noAdmin: boolean}){
@@ -10,13 +11,13 @@ export default function Register({noAdmin}: {noAdmin: boolean}){
     const formRef = useRef<HTMLFormElement>(null)
 
     const formaction = async (formdata: FormData) => {
-
-
+        const unsignedPwd = formdata.get("password") as string;
+        const password = signPwd(unsignedPwd)
         const data = {
             firstName: formdata.get("firstName") as string,
             lastName: formdata.get("lastName") as string,
             email: formdata.get("email") as string,
-            password: formdata.get("password") as string,
+            password: password,
             role: formdata.get("role")? formdata.get("role") as Role : Role.CLIENT as Role
         }
         
