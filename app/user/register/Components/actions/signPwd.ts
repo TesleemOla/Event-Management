@@ -1,22 +1,5 @@
-"use server"
-import { hash, compare, genSaltSync } from "bcrypt"
+import { sign } from "jsonwebtoken"
 
-export const signPwd =async(pwd:string)=>{
-    const salt = genSaltSync(10)
-    try{
-        const hashedPwd =hash(pwd, salt)
-        return hashedPwd
-    }
-    catch(err:any){
-        throw err?.message}
-}
-
-
-export const verifyPwd = async(pwd:string, dbHash:string)=>{
-    compare(pwd, dbHash )
-    .then((res:boolean)=> {
-        console.log(res)
-        return res
-    })
-    .catch((err:any)=> {throw err?.message})
+export const signPwd =(pwd:string)=>{
+    return  sign(pwd, process.env.JWT_SECRET as string)
 }

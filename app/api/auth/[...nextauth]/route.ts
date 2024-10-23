@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import prisma from "@/lib/db"
-import { verify } from "jsonwebtoken"
-import { compareSync } from "bcrypt";
+import { sign } from "jsonwebtoken"
 
 
 
@@ -18,24 +17,21 @@ const handler = NextAuth({
                     label: "Password", type: "password"
                 }
             },
-            async authorize (credentials){
-                
+            authorize: async function (credentials){
                 const { email, password } = credentials as {email:string, password:string}
-                
-                
+                const encoded = sign(password, process.env.JWT_SECRET as string)
+          
                 const user = await prisma.user.findUnique({
                     where: {
                         email: email,
+                        password: encoded
                     }
                 })
-                
-                if (!user) {
-                    throw new Error("User not found");
-                }else if (user&& compareSync(password,user?.password,)) {
+                if (user) {
                     return user;
-                }else{
-                    throw new Error("Incorrect Password");
                 }
+                throw new Error("User not found");
+                    
             }
         })       
         
@@ -45,19 +41,15 @@ const handler = NextAuth({
             return {...user,...token}
         },
         async session({ session, token, user }) {
-            return {...session, ...user,...token}
+            return {...session, ...user, token}
         
     },
     },
     pages: {
         signIn: "/user/login"
     },
- 
-   jwt: {
-    secret: process.env.NEXTAUTH_SECRET
-   }
+   
+    secret: process.env.JWT_SECRET
 })
 
 export { handler as GET, handler as POST }
-
-

@@ -17,7 +17,6 @@
     "@mui/material": "^5.16.4",
     "@prisma/adapter-pg": "^5.17.0",
     "@prisma/client": "^5.20.0",
-    "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "formik": "^2.4.6",
@@ -32,7 +31,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",

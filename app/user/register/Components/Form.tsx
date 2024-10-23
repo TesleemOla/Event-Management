@@ -12,7 +12,7 @@ export default function Register({noAdmin}: {noAdmin: boolean}){
 
     const formaction = async (formdata: FormData) => {
         const unsignedPwd = formdata.get("password") as string;
-        const password = await signPwd(unsignedPwd)
+        const password = signPwd(unsignedPwd)
         const data = {
             firstName: formdata.get("firstName") as string,
             lastName: formdata.get("lastName") as string,
@@ -30,8 +30,7 @@ export default function Register({noAdmin}: {noAdmin: boolean}){
         
             formRef?.current?.reset()
         } catch (err: any) {
-            console.log(err)
-            showToast("error", "An Error occured. Please try again!")
+            showToast("error", err?.message)
             formRef?.current?.reset()
         }
     }
