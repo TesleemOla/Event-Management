@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 
   const today = startOfToday();
-  const [selectedDay, setSelectedDay] = useState<Date>()
+
   const [currMonth, setCurrMonth] = useState(()=> format(today, 'MMM-yyy'))
 
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date())
@@ -81,9 +81,7 @@ import Link from 'next/link'
                     h-8 w-8 rounded-full hover:text-white  ${isSameMonth(day, today) ? 
                       "text-gray-900": "text-gray-400"
                     } ${!isToday(day) && "hover:bg-blue-500"} 
-                    ${isToday(day) && "bg-red-500 text-white"}
-                    // ${day === selectedDay && "active:text-black active:bg-yellow"}
-                    `} >
+                    ${isToday(day) && "bg-red-500 text-white"} `} >
                       {format(day, "d")}
                     </p>
                   </Link>
