@@ -1,11 +1,11 @@
 "use server"
 import prisma from "@/lib/db";
 import { Regdata } from "@/types";
-import { sign } from "jsonwebtoken";
+
 
 
 export async function action(data: Regdata) {
-    data = {...data, password: sign(data.password, process.env.JWT_SECRET as string)}
+   
     try {
 
         const newUser = await prisma.user.create({
@@ -16,6 +16,11 @@ export async function action(data: Regdata) {
 
     }
     catch (err: any) {
+        if (err?.PrismaClientInitializationError){
+            throw "An error occured!"
+        } else if (err?.PrismaClientKnownRequestError){
+            throw "User already exists"
+        }
         throw err
     }
 }

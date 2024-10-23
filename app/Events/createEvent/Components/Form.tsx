@@ -4,6 +4,7 @@ import { SendButton } from "@/app/Components"
 import { action } from "./action"
 import { showToast } from "@/app/Components/toastItem"
 import { useRef } from "react"
+import { useSession } from "next-auth/react"
 
 const formSchema=object({
   eventTitle: string().required("Please provide an event"),
@@ -11,6 +12,7 @@ const formSchema=object({
   eventTime: string().required("Please provide a time for the event")
 })
 const CreateForm = () =>{
+  const {data:session, status} = useSession()
   const formRef = useRef<HTMLFormElement|null>(null)
   
     const eventAction=async(formData: FormData)=>{
