@@ -2,6 +2,9 @@
 import React from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
+import { showToast } from '@/app/Components/toastItem'
+import { verifyPwd } from '../register/Components/actions/signPwd'
+
 
 
 
@@ -10,17 +13,18 @@ const Login = () => {
 
     async function handleLogin(formData: FormData) {
         const username = formData.get("username")
-        const password = formData.get("password")
-        // getCsrfToken()
-        signIn("credentials", {
+        const password = formData.get("password") as string
+
+        
+    
+        const response = await signIn("credentials", {
             redirect: true,
             callbackUrl: "/Events",
             email: username,
-            password: password,
+            password
         })
 
-            .then(resp => alert(resp))
-            .catch(err => alert(err?.message))
+        alert(response)
 
     }
 
