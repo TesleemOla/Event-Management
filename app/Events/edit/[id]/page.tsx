@@ -1,7 +1,5 @@
 import React from 'react'
 import prisma from '@/lib/db'
-import EditIcon from '@/app/Components/icons/editIcon'
-import Link from 'next/link'
 import EventsMap from '@/app/Components/EventsMap'
 
 interface params {
@@ -27,7 +25,7 @@ const SingleEvent = async ({params}:params) => {
             <option value="myevents">My Events</option>
           </select>
         </div>
-        <EventsMap allEvents={allEvents} />
+        {allEvents? <EventsMap allEvents={allEvents} />:<p>No Events Today</p>}
     </div>
   )
 }
