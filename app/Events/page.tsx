@@ -7,11 +7,12 @@ import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth,
 import Link from 'next/link'
 
 
+
  function Page() {
 
 
   const today = startOfToday();
-
+   
   const [currMonth, setCurrMonth] = useState(()=> format(today, 'MMM-yyy'))
 
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date())
@@ -78,7 +79,7 @@ import Link from 'next/link'
                 return (
                   <Link href={`/Events/edit/${format(currMonth, "yyyy-MM")}-${format(day, "d")}`} key={id} className={colStartClasses[getDay(day)]} >
                     <p className={`cursor-pointer flex items-center justify-center font-semibold
-                    h-8 w-8 rounded-full hover:text-white  ${isSameMonth(day, today) ? 
+                    h-8 w-8 hover:text-white  ${isSameMonth(day, today) ? 
                       "text-gray-900": "text-gray-400"
                     } ${!isToday(day) && "hover:bg-blue-500"} 
                     ${isToday(day) && "bg-red-500 text-white"} `} >
@@ -90,7 +91,6 @@ import Link from 'next/link'
             }
           </div>
         </div>
-
       </div>
    
   )

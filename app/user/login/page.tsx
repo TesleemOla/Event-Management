@@ -1,9 +1,10 @@
 "use client"
-import React from 'react'
+import React, { useActionState } from 'react'
+import { useFormState } from 'react-dom'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { showToast } from '@/app/Components/toastItem'
-import { verifyPwd } from '../register/Components/actions/signPwd'
+
 
 
 
@@ -11,7 +12,7 @@ import { verifyPwd } from '../register/Components/actions/signPwd'
 
 const Login = () => {
 
-    async function handleLogin(formData: FormData) {
+    async function handleLogin( formData: FormData) {
         const username = formData.get("username")
         const password = formData.get("password") as string
 
@@ -24,9 +25,14 @@ const Login = () => {
             password
         })
 
-        alert(response)
+        if(response){
+            showToast("success", "Successfully signed in")
+        }else{
+            showToast("error", "error signing in!")
+        }
 
     }
+   
 
     return (
         <div className=" flex-center min-h-screen mx-auto w-3/5 md:w-1/5

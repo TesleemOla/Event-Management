@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react"
 import "./globals.css";
 import Header from "./Components/Header";
 import { Toaster } from "sonner";
+import { LoginProvider } from "./Context/Login";
 
 
 
@@ -22,9 +23,11 @@ export default function RootLayout({
       <body className="my-4">
 
           <SessionProvider>
-            <Header/>
-            {children}
-            <Toaster richColors position="top-right" visibleToasts={1}/>
+            <LoginProvider>
+              <Header/>
+              {children}
+              <Toaster richColors position="top-right" visibleToasts={1}/>
+            </LoginProvider>
           </SessionProvider>
       </body>
     </html>
