@@ -1,6 +1,5 @@
 "use client"
 import React, { useState} from 'react'
-import 'react-calendar/dist/Calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { format, add, startOfToday, parse, eachDayOfInterval, endOfMonth, 
   isToday, isSameMonth, getDay
